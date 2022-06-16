@@ -1,8 +1,11 @@
 module github.com/zondax/filecoin-actors-cids
 
-go 1.18
+go 1.17
 
-require github.com/filecoin-project/lotus v1.16.0-rc1
+require (
+	github.com/filecoin-project/lotus v1.16.0-rc1
+	github.com/filecoin-project/specs-actors/v7 v7.0.1
+)
 
 require (
 	github.com/DataDog/zstd v1.4.1 // indirect
@@ -21,7 +24,7 @@ require (
 	github.com/filecoin-project/go-bitfield v0.2.4 // indirect
 	github.com/filecoin-project/go-cbor-util v0.0.1 // indirect
 	github.com/filecoin-project/go-data-transfer v1.15.1 // indirect
-	github.com/filecoin-project/go-fil-markets v1.20.1-v16-1 // indirect
+	github.com/filecoin-project/go-fil-markets v1.20.1 // indirect
 	github.com/filecoin-project/go-hamt-ipld v0.1.5 // indirect
 	github.com/filecoin-project/go-hamt-ipld/v2 v2.0.0 // indirect
 	github.com/filecoin-project/go-hamt-ipld/v3 v3.1.0 // indirect
@@ -34,7 +37,6 @@ require (
 	github.com/filecoin-project/specs-actors/v4 v4.0.2 // indirect
 	github.com/filecoin-project/specs-actors/v5 v5.0.6 // indirect
 	github.com/filecoin-project/specs-actors/v6 v6.0.2 // indirect
-	github.com/filecoin-project/specs-actors/v7 v7.0.1 // indirect
 	github.com/gbrlsnchs/jwt/v3 v3.0.1 // indirect
 	github.com/go-logr/logr v1.2.1 // indirect
 	github.com/go-logr/stdr v1.2.0 // indirect

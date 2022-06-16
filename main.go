@@ -3,39 +3,22 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	lotusBuild "github.com/filecoin-project/lotus/build"
-	"github.com/filecoin-project/lotus/chain/actors"
+	"github.com/zondax/filecoin-actors-cids/utils"
 	"io/ioutil"
 )
 
-const outputFileName = "gen/builtin-actors-cids.json"
-
-type BuiltinActorsMetadata struct {
-	Network     string
-	Version     actors.Version
-	ManifestCid string
-	Actors      map[string]string
-}
+const outputFileName = "gen/builtin-actors-cids"
 
 func main() {
-	if len(lotusBuild.EmbeddedBuiltinActorsMetadata) == 0 {
-		fmt.Println("error: EmbeddedBuiltinActorsMetadata is empty!")
+	exportMetadata(utils.ActorsV7)
+	exportMetadata(utils.ActorsV8)
+}
+
+func exportMetadata(version uint) {
+	meta := utils.GetFullMetadata(version)
+	if len(meta) == 0 {
+		fmt.Printf("Metadata for actors version '%d' is empty", version)
 		return
-	}
-
-	var meta []BuiltinActorsMetadata
-	for _, d := range lotusBuild.EmbeddedBuiltinActorsMetadata {
-		cids := make(map[string]string)
-		for name, cid := range d.Actors {
-			cids[name] = cid.String()
-		}
-
-		meta = append(meta, BuiltinActorsMetadata{
-			Network:     d.Network,
-			Version:     d.Version,
-			ManifestCid: d.ManifestCid.String(),
-			Actors:      cids,
-		})
 	}
 
 	j, err := json.MarshalIndent(meta, "", "  ")
@@ -43,10 +26,11 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	err = ioutil.WriteFile(outputFileName, j, 0644)
+
+	err = ioutil.WriteFile(fmt.Sprintf("%s_V%d.json", outputFileName, version), j, 0600)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	fmt.Printf("Downloaded actors cids version %s", meta[0].Version)
+	fmt.Println("json file created for actors cids with version", version)
 }
