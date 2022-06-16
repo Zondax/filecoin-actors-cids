@@ -1,0 +1,26 @@
+name: Publish Json files
+on:
+  release:
+    tags:
+      - "v[0-9]+(\\.[0-9]+)*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17'
+      - name: Export json
+        run: |
+          make export_actors_cid
+      - name: Archive json files
+        uses: actions/upload-artifact@v3
+        with:
+          name: Builtin actors CIDs
+          path: |
+            gen/*.json
