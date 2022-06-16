@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/zondax/filecoin-actors-cids/utils"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 )
 
 const outputFileName = "gen/builtin-actors-cids"
@@ -24,6 +26,13 @@ func exportMetadata(version uint) {
 	j, err := json.MarshalIndent(meta, "", "  ")
 	if err != nil {
 		fmt.Println(err)
+		return
+	}
+
+	outPath := filepath.Join(".", "gen")
+	err = os.MkdirAll(outPath, os.ModePerm)
+	if err != nil {
+		fmt.Println("could not create output path")
 		return
 	}
 
