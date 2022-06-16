@@ -31,8 +31,6 @@ jobs:
         with:
           go-version: '^1.17'
       - run: make build
-      - name: ModTidy check
-        run: make check-modtidy
       - name: Lint check
         run: |
           make install_lint
