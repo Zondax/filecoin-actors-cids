@@ -18,9 +18,7 @@ jobs:
       - name: Export json
         run: |
           make export_actors_cid
-      - name: Archive json files
-        uses: actions/upload-artifact@v3
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
         with:
-          name: Builtin actors CIDs
-          path: |
-            gen/*.json
+          files: gen/*.json
