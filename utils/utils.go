@@ -3,7 +3,7 @@ package utils
 import (
 	"fmt"
 	lotusBuildLatest "github.com/filecoin-project/lotus/build"
-	builtinV7 "github.com/filecoin-project/specs-actors/v7/actors/builtin"
+	builtinV8 "github.com/filecoin-project/specs-actors/v8/actors/builtin"
 	"github.com/ipfs/go-cid"
 )
 
@@ -16,15 +16,15 @@ const (
 )
 
 const (
-	ActorsV7 uint = 7
 	ActorsV8 uint = 8
+	ActorsV9 uint = 9
 )
 
 func GetFullMetadata(version uint) []ActorsMetadata {
 	switch version {
-	case ActorsV8:
+	case ActorsV9:
 		return getLatestMetadata()
-	case ActorsV7:
+	case ActorsV8:
 		return getPreviousMetadata()
 	default:
 		fmt.Println("error actor version unsupported!")
@@ -62,7 +62,7 @@ func getLatestMetadata() []ActorsMetadata {
 }
 
 func getPreviousMetadata() []ActorsMetadata {
-	const previousVersion = 7
+	const previousVersion = 8
 	var meta []ActorsMetadata
 	var networks = []string{
 		NetworkCalibration,
@@ -73,17 +73,17 @@ func getPreviousMetadata() []ActorsMetadata {
 	}
 
 	cids := map[string]cid.Cid{
-		"account":          builtinV7.AccountActorCodeID,
-		"cron":             builtinV7.CronActorCodeID,
-		"init":             builtinV7.InitActorCodeID,
-		"storagemarket":    builtinV7.StorageMarketActorCodeID,
-		"storageminer":     builtinV7.StorageMinerActorCodeID,
-		"multisig":         builtinV7.MultisigActorCodeID,
-		"paymentchannel":   builtinV7.PaymentChannelActorCodeID,
-		"storagepower":     builtinV7.StoragePowerActorCodeID,
-		"reward":           builtinV7.RewardActorCodeID,
-		"system":           builtinV7.SystemActorCodeID,
-		"verifiedregistry": builtinV7.VerifiedRegistryActorCodeID,
+		"account":          builtinV8.AccountActorCodeID,
+		"cron":             builtinV8.CronActorCodeID,
+		"init":             builtinV8.InitActorCodeID,
+		"storagemarket":    builtinV8.StorageMarketActorCodeID,
+		"storageminer":     builtinV8.StorageMinerActorCodeID,
+		"multisig":         builtinV8.MultisigActorCodeID,
+		"paymentchannel":   builtinV8.PaymentChannelActorCodeID,
+		"storagepower":     builtinV8.StoragePowerActorCodeID,
+		"reward":           builtinV8.RewardActorCodeID,
+		"system":           builtinV8.SystemActorCodeID,
+		"verifiedregistry": builtinV8.VerifiedRegistryActorCodeID,
 	}
 
 	for _, network := range networks {
