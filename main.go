@@ -12,8 +12,8 @@ import (
 const outputFileName = "gen/builtin-actors-cids"
 
 func main() {
-	exportMetadata(utils.ActorsV8)
-	exportMetadata(utils.ActorsV9)
+	exportMetadata(utils.PreviousVersion)
+	exportMetadata(utils.LatestVersion)
 }
 
 func exportMetadata(version uint) {

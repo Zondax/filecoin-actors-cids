@@ -3,7 +3,7 @@ package utils
 import (
 	"fmt"
 	lotusBuildLatest "github.com/filecoin-project/lotus/build"
-	builtinV8 "github.com/filecoin-project/specs-actors/v8/actors/builtin"
+	"github.com/filecoin-project/specs-actors/v8/actors/builtin"
 	"github.com/ipfs/go-cid"
 )
 
@@ -16,15 +16,15 @@ const (
 )
 
 const (
-	ActorsV8 uint = 8
-	ActorsV9 uint = 9
+	PreviousVersion uint = 8
+	LatestVersion   uint = 9
 )
 
 func GetFullMetadata(version uint) []ActorsMetadata {
 	switch version {
-	case ActorsV9:
+	case LatestVersion:
 		return getLatestMetadata()
-	case ActorsV8:
+	case PreviousVersion:
 		return getPreviousMetadata()
 	default:
 		fmt.Println("error actor version unsupported!")
@@ -62,7 +62,6 @@ func getLatestMetadata() []ActorsMetadata {
 }
 
 func getPreviousMetadata() []ActorsMetadata {
-	const previousVersion = 8
 	var meta []ActorsMetadata
 	var networks = []string{
 		NetworkCalibration,
@@ -73,23 +72,23 @@ func getPreviousMetadata() []ActorsMetadata {
 	}
 
 	cids := map[string]cid.Cid{
-		"account":          builtinV8.AccountActorCodeID,
-		"cron":             builtinV8.CronActorCodeID,
-		"init":             builtinV8.InitActorCodeID,
-		"storagemarket":    builtinV8.StorageMarketActorCodeID,
-		"storageminer":     builtinV8.StorageMinerActorCodeID,
-		"multisig":         builtinV8.MultisigActorCodeID,
-		"paymentchannel":   builtinV8.PaymentChannelActorCodeID,
-		"storagepower":     builtinV8.StoragePowerActorCodeID,
-		"reward":           builtinV8.RewardActorCodeID,
-		"system":           builtinV8.SystemActorCodeID,
-		"verifiedregistry": builtinV8.VerifiedRegistryActorCodeID,
+		"account":          builtin.AccountActorCodeID,
+		"cron":             builtin.CronActorCodeID,
+		"init":             builtin.InitActorCodeID,
+		"storagemarket":    builtin.StorageMarketActorCodeID,
+		"storageminer":     builtin.StorageMinerActorCodeID,
+		"multisig":         builtin.MultisigActorCodeID,
+		"paymentchannel":   builtin.PaymentChannelActorCodeID,
+		"storagepower":     builtin.StoragePowerActorCodeID,
+		"reward":           builtin.RewardActorCodeID,
+		"system":           builtin.SystemActorCodeID,
+		"verifiedregistry": builtin.VerifiedRegistryActorCodeID,
 	}
 
 	for _, network := range networks {
 		meta = append(meta, ActorsMetadata{
 			Network:          network,
-			Version:          previousVersion,
+			Version:          PreviousVersion,
 			ActorsNameCidMap: cids,
 		})
 	}
