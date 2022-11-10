@@ -43,7 +43,9 @@ func GetMetadataForNetwork(version uint, network string) (bool, ActorsMetadata) 
 
 func getLatestMetadata() []ActorsMetadata {
 	var meta []ActorsMetadata
-	for _, d := range lotusBuildLatest.EmbeddedBuiltinActorsMetadata {
+	builtinActorsMetadata := lotusBuildLatest.EmbeddedBuiltinActorsMetadata
+	builtinActorsMetadata = append(builtinActorsMetadata, WallabyBuiltinActorsMetadata...)
+	for _, d := range builtinActorsMetadata {
 		if uint(d.Version) != LatestVersion {
 			continue
 		}
@@ -66,7 +68,9 @@ func getLatestMetadata() []ActorsMetadata {
 
 func getPreviousMetadata() []ActorsMetadata {
 	var meta []ActorsMetadata
-	for _, d := range lotusBuildLatest.EmbeddedBuiltinActorsMetadata {
+	builtinActorsMetadata := lotusBuildLatest.EmbeddedBuiltinActorsMetadata
+	builtinActorsMetadata = append(builtinActorsMetadata, WallabyBuiltinActorsMetadata...)
+	for _, d := range builtinActorsMetadata {
 		if uint(d.Version) != PreviousVersion {
 			continue
 		}
