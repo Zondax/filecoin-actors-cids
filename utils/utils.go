@@ -3,7 +3,6 @@ package utils
 import (
 	"fmt"
 	lotusBuildLatest "github.com/filecoin-project/lotus/build"
-	builtinV7 "github.com/filecoin-project/specs-actors/v7/actors/builtin"
 	"github.com/ipfs/go-cid"
 )
 
@@ -16,15 +15,15 @@ const (
 )
 
 const (
-	ActorsV7 uint = 7
-	ActorsV8 uint = 8
+	PreviousVersion uint = 8
+	LatestVersion   uint = 9
 )
 
 func GetFullMetadata(version uint) []ActorsMetadata {
 	switch version {
-	case ActorsV8:
+	case LatestVersion:
 		return getLatestMetadata()
-	case ActorsV7:
+	case PreviousVersion:
 		return getPreviousMetadata()
 	default:
 		fmt.Println("error actor version unsupported!")
@@ -44,7 +43,13 @@ func GetMetadataForNetwork(version uint, network string) (bool, ActorsMetadata) 
 
 func getLatestMetadata() []ActorsMetadata {
 	var meta []ActorsMetadata
-	for _, d := range lotusBuildLatest.EmbeddedBuiltinActorsMetadata {
+	builtinActorsMetadata := lotusBuildLatest.EmbeddedBuiltinActorsMetadata
+	builtinActorsMetadata = append(builtinActorsMetadata, WallabyBuiltinActorsMetadata...)
+	for _, d := range builtinActorsMetadata {
+		if uint(d.Version) != LatestVersion {
+			continue
+		}
+
 		cids := make(map[string]cid.Cid)
 		for name, cid := range d.Actors {
 			cids[name] = cid
@@ -62,34 +67,23 @@ func getLatestMetadata() []ActorsMetadata {
 }
 
 func getPreviousMetadata() []ActorsMetadata {
-	const previousVersion = 7
 	var meta []ActorsMetadata
-	var networks = []string{
-		NetworkCalibration,
-		NetworkButterfly,
-		NetworkCaterpillar,
-		NetworkDevnet,
-		NetworkMainnet,
-	}
+	builtinActorsMetadata := lotusBuildLatest.EmbeddedBuiltinActorsMetadata
+	builtinActorsMetadata = append(builtinActorsMetadata, WallabyBuiltinActorsMetadata...)
+	for _, d := range builtinActorsMetadata {
+		if uint(d.Version) != PreviousVersion {
+			continue
+		}
 
-	cids := map[string]cid.Cid{
-		"account":          builtinV7.AccountActorCodeID,
-		"cron":             builtinV7.CronActorCodeID,
-		"init":             builtinV7.InitActorCodeID,
-		"storagemarket":    builtinV7.StorageMarketActorCodeID,
-		"storageminer":     builtinV7.StorageMinerActorCodeID,
-		"multisig":         builtinV7.MultisigActorCodeID,
-		"paymentchannel":   builtinV7.PaymentChannelActorCodeID,
-		"storagepower":     builtinV7.StoragePowerActorCodeID,
-		"reward":           builtinV7.RewardActorCodeID,
-		"system":           builtinV7.SystemActorCodeID,
-		"verifiedregistry": builtinV7.VerifiedRegistryActorCodeID,
-	}
+		cids := make(map[string]cid.Cid)
+		for name, cid := range d.Actors {
+			cids[name] = cid
+		}
 
-	for _, network := range networks {
 		meta = append(meta, ActorsMetadata{
-			Network:          network,
-			Version:          previousVersion,
+			Network:          d.Network,
+			Version:          uint(d.Version),
+			ManifestCid:      d.ManifestCid.String(),
 			ActorsNameCidMap: cids,
 		})
 	}

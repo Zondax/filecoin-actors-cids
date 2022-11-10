@@ -8,19 +8,19 @@ import (
 func Test_GetActorCID(t *testing.T) {
 	actorsMap := make(ActorsMetadataMap)
 
-	ok, meta := GetMetadataForNetwork(ActorsV8, NetworkDevnet)
+	ok, meta := GetMetadataForNetwork(LatestVersion, NetworkDevnet)
 	if !ok {
 		t.Fatal()
 	}
 
-	actorsMap[ActorsV8] = meta
-	msigCIDV8 := actorsMap.GetActorCid(ActorsV8, "multisig")
+	actorsMap[LatestVersion] = meta
+	msigCIDV8 := actorsMap.GetActorCid(LatestVersion, "multisig")
 
 	if msigCIDV8.Equals(cid.Cid{}) {
 		t.Fatal()
 	}
 
-	ok, msigNameV8 := actorsMap.GetActorName(ActorsV8, msigCIDV8)
+	ok, msigNameV8 := actorsMap.GetActorName(LatestVersion, msigCIDV8)
 	if !ok {
 		t.Fatal()
 	}

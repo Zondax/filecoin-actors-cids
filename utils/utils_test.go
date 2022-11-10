@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	versions = []uint{ActorsV7, ActorsV8}
+	versions = []uint{PreviousVersion, LatestVersion}
 	networks = []string{NetworkCalibration, NetworkButterfly,
 		NetworkCaterpillar, NetworkDevnet, NetworkMainnet}
 )
