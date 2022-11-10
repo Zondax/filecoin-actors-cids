@@ -3,7 +3,6 @@ package utils
 import (
 	"fmt"
 	lotusBuildLatest "github.com/filecoin-project/lotus/build"
-	"github.com/filecoin-project/specs-actors/v8/actors/builtin"
 	"github.com/ipfs/go-cid"
 )
 
@@ -45,6 +44,10 @@ func GetMetadataForNetwork(version uint, network string) (bool, ActorsMetadata) 
 func getLatestMetadata() []ActorsMetadata {
 	var meta []ActorsMetadata
 	for _, d := range lotusBuildLatest.EmbeddedBuiltinActorsMetadata {
+		if uint(d.Version) != LatestVersion {
+			continue
+		}
+
 		cids := make(map[string]cid.Cid)
 		for name, cid := range d.Actors {
 			cids[name] = cid
@@ -63,32 +66,20 @@ func getLatestMetadata() []ActorsMetadata {
 
 func getPreviousMetadata() []ActorsMetadata {
 	var meta []ActorsMetadata
-	var networks = []string{
-		NetworkCalibration,
-		NetworkButterfly,
-		NetworkCaterpillar,
-		NetworkDevnet,
-		NetworkMainnet,
-	}
+	for _, d := range lotusBuildLatest.EmbeddedBuiltinActorsMetadata {
+		if uint(d.Version) != PreviousVersion {
+			continue
+		}
 
-	cids := map[string]cid.Cid{
-		"account":          builtin.AccountActorCodeID,
-		"cron":             builtin.CronActorCodeID,
-		"init":             builtin.InitActorCodeID,
-		"storagemarket":    builtin.StorageMarketActorCodeID,
-		"storageminer":     builtin.StorageMinerActorCodeID,
-		"multisig":         builtin.MultisigActorCodeID,
-		"paymentchannel":   builtin.PaymentChannelActorCodeID,
-		"storagepower":     builtin.StoragePowerActorCodeID,
-		"reward":           builtin.RewardActorCodeID,
-		"system":           builtin.SystemActorCodeID,
-		"verifiedregistry": builtin.VerifiedRegistryActorCodeID,
-	}
+		cids := make(map[string]cid.Cid)
+		for name, cid := range d.Actors {
+			cids[name] = cid
+		}
 
-	for _, network := range networks {
 		meta = append(meta, ActorsMetadata{
-			Network:          network,
-			Version:          PreviousVersion,
+			Network:          d.Network,
+			Version:          uint(d.Version),
+			ManifestCid:      d.ManifestCid.String(),
 			ActorsNameCidMap: cids,
 		})
 	}
