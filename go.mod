@@ -4,7 +4,6 @@ go 1.18
 
 require (
 	github.com/filecoin-project/lotus v1.18.0-rc5
-	github.com/filecoin-project/specs-actors/v8 v8.0.1
 	github.com/ipfs/go-cid v0.3.2
 )
 
