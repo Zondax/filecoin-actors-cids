@@ -3,7 +3,7 @@ module github.com/zondax/filecoin-actors-cids
 go 1.18
 
 require (
-	github.com/filecoin-project/lotus v1.18.0-rc5
+	github.com/filecoin-project/lotus v1.18.0
 	github.com/ipfs/go-cid v0.3.2
 )
 
